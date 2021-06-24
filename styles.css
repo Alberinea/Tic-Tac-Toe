@@ -11,7 +11,7 @@ body {
 
 #turnDisplay {
     height: 30px;
-    width: 200px;
+    width: 100%;
     background-color: inherit;
     margin-bottom: 60px;
     text-align: center;
@@ -36,6 +36,8 @@ body {
     align-items: center;
     font-size: 2rem;
     font-weight: bold;
+    cursor: pointer;
+    user-select: none;
 }
 
 #restart {
@@ -44,13 +46,20 @@ body {
     margin-top: 80px;
     background-color: inherit;
     font-size: 1.5rem;
+    cursor: pointer;
+    user-select: none;
 }
 
 #difficulties {
     background-color: inherit;
     margin-bottom: 60px;
     font-size: 1.5rem;
-    border-color: inherit;
+    border-bottom: 3px solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    outline: 0px;
+    cursor: pointer;
 }
 
 option {
@@ -62,14 +71,18 @@ table {
     border-style: hidden;
     height: 600px;
     width: 600px;
+    font-size: 10rem;
+    text-align: center;
+    table-layout: fixed;
 }
 
-table td {
+td {
     border: 10px solid black;
-    width: calc(100% / 9);
-    height: calc(100% / 9);
+    width: 200px;
+    height: 200px;
+    user-select: none;
 }
 
 .score {
-    padding-left: 20px;
+    padding: 20px;
 }
