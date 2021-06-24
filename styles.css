@@ -15,7 +15,7 @@ body {
     background-color: inherit;
     margin-bottom: 60px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
 }
 
 #scoreContainer {
@@ -87,3 +87,10 @@ td {
     padding: 20px;
 }
 
+.blur {
+    filter: blur(4px);
+}
+
+.click {
+    cursor: pointer;
+}
