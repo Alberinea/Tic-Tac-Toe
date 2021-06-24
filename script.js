@@ -33,16 +33,25 @@ const gameLogic = (() => {
             status.innerText = `${space[0]} wins`;
             let result = parseInt(document.getElementById(`${space[0]}`).querySelector('.count').innerText);
             document.getElementById(`${space[0]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('0').style.color = 'green';
+            document.getElementById('1').style.color = 'green';
+            document.getElementById('2').style.color = 'green';
         }
         if (pattern[1].every(c2)) {
             status.innerText = `${space[3]} wins`;
-            let result = parseInt(document.getElementById(`${space[3]}`).querySelector('.count').innerText)
-            document.getElementById(`${space[3]}`).querySelector('.count').innerText = result += 1
+            let result = parseInt(document.getElementById(`${space[3]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[3]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('3').style.color = 'green';
+            document.getElementById('4').style.color = 'green';
+            document.getElementById('5').style.color = 'green';
         }
         if (pattern[2].every(c3)) {
             status.innerText = `${space[6]} wins`;
             let result = parseInt(document.getElementById(`${space[6]}`).querySelector('.count').innerText);
             document.getElementById(`${space[6]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('6').style.color = 'green';
+            document.getElementById('7').style.color = 'green';
+            document.getElementById('8').style.color = 'green';
         }
     };
     const _verticalWin = () => {
@@ -58,16 +67,25 @@ const gameLogic = (() => {
             status.innerText = `${space[0]} wins`;
             let result = parseInt(document.getElementById(`${space[0]}`).querySelector('.count').innerText);
             document.getElementById(`${space[0]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('0').style.color = 'green';
+            document.getElementById('3').style.color = 'green';
+            document.getElementById('6').style.color = 'green';
         }
         if (pattern[1].every(c2)) {
             status.innerText = `${space[1]} wins`;
             let result = parseInt(document.getElementById(`${space[1]}`).querySelector('.count').innerText);
             document.getElementById(`${space[1]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('1').style.color = 'green';
+            document.getElementById('4').style.color = 'green';
+            document.getElementById('7').style.color = 'green';
         }
         if (pattern[2].every(c3)) {
             status.innerText = `${space[2]} wins`;
             let result = parseInt(document.getElementById(`${space[2]}`).querySelector('.count').innerText);
             document.getElementById(`${space[2]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('5').style.color = 'green';
+            document.getElementById('8').style.color = 'green';
+            document.getElementById('2').style.color = 'green';
         }
     };
     const _diagonalWin = () => {
@@ -81,11 +99,17 @@ const gameLogic = (() => {
             status.innerText = `${space[0]} wins`;
             let result = parseInt(document.getElementById(`${space[0]}`).querySelector('.count').innerText);
             document.getElementById(`${space[0]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('0').style.color = 'green';
+            document.getElementById('4').style.color = 'green';
+            document.getElementById('8').style.color = 'green';
         }
         if (pattern[1].every(c2)) {
             status.innerText = `${space[2]} wins`;
             let result = parseInt(document.getElementById(`${space[2]}`).querySelector('.count').innerText);
             document.getElementById(`${space[2]}`).querySelector('.count').innerText = result += 1;
+            document.getElementById('2').style.color = 'green';
+            document.getElementById('4').style.color = 'green';
+            document.getElementById('6').style.color = 'green';
         }
     };
     const evaluate = () => {
@@ -125,6 +149,7 @@ const gameBoard = (() => {
             gameLogic.space[i] = undefined;
         }
         gameLogic.status.innerText = 'Start game or select player';
+        document.querySelectorAll('.count').forEach((count) => (count.innerText = 0));
     };
     const restart = () => _restartButton.addEventListener('click', restartFunction);
     const click = () => _cells.forEach((cell) => cell.addEventListener('click', _draw));
