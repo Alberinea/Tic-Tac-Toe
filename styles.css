@@ -9,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-#turnDisplay {
+#statusDisplay {
     height: 30px;
     width: 100%;
     background-color: inherit;
