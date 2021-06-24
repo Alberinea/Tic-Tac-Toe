@@ -3,11 +3,9 @@ const Player = (side) => {
     const takeTurn = function () {
         if (!_turnEnd) {
             _turnEnd = true;
-            console.log('a');
             return this.side;
         } else if (_turnEnd) {
             _turnEnd = false;
-            console.log('b');
         }
     };
     return { side, takeTurn };
@@ -33,12 +31,18 @@ const gameLogic = (() => {
         ];
         if (pattern[0].every(c1)) {
             status.innerText = `${space[0]} wins`;
+            let result = parseInt(document.getElementById(`${space[0]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[0]}`).querySelector('.count').innerText = result += 1;
         }
         if (pattern[1].every(c2)) {
             status.innerText = `${space[3]} wins`;
+            let result = parseInt(document.getElementById(`${space[3]}`).querySelector('.count').innerText)
+            document.getElementById(`${space[3]}`).querySelector('.count').innerText = result += 1
         }
         if (pattern[2].every(c3)) {
             status.innerText = `${space[6]} wins`;
+            let result = parseInt(document.getElementById(`${space[6]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[6]}`).querySelector('.count').innerText = result += 1;
         }
     };
     const _verticalWin = () => {
@@ -52,12 +56,18 @@ const gameLogic = (() => {
         ];
         if (pattern[0].every(c1)) {
             status.innerText = `${space[0]} wins`;
+            let result = parseInt(document.getElementById(`${space[0]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[0]}`).querySelector('.count').innerText = result += 1;
         }
         if (pattern[1].every(c2)) {
             status.innerText = `${space[1]} wins`;
+            let result = parseInt(document.getElementById(`${space[1]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[1]}`).querySelector('.count').innerText = result += 1;
         }
         if (pattern[2].every(c3)) {
             status.innerText = `${space[2]} wins`;
+            let result = parseInt(document.getElementById(`${space[2]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[2]}`).querySelector('.count').innerText = result += 1;
         }
     };
     const _diagonalWin = () => {
@@ -69,31 +79,34 @@ const gameLogic = (() => {
         ];
         if (pattern[0].every(c1)) {
             status.innerText = `${space[0]} wins`;
+            let result = parseInt(document.getElementById(`${space[0]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[0]}`).querySelector('.count').innerText = result += 1;
         }
         if (pattern[1].every(c2)) {
             status.innerText = `${space[2]} wins`;
+            let result = parseInt(document.getElementById(`${space[2]}`).querySelector('.count').innerText);
+            document.getElementById(`${space[2]}`).querySelector('.count').innerText = result += 1;
         }
     };
-    const gameOver = () => {
+    const evaluate = () => {
         _draw();
         _horizontalWin();
         _verticalWin();
         _diagonalWin();
     };
-    return { status, space, gameOver };
+    return { status, space, evaluate };
 })();
 
 const gameBoard = (() => {
-    let init = false;
     const _cells = document.querySelectorAll('td');
     const _restartButton = document.getElementById('restart');
     const _draw = function (e) {
-        init = true;
+        if (gameLogic.status.innerText != 'Start game or select player') return;
         if (this.innerText != '') return;
         this.innerText = x.takeTurn() || o.takeTurn() || 'O';
         this.style.color = this.innerText === 'O' ? 'rgb(221, 17, 17)' : 'black';
         gameLogic.space[this.id] = this.innerText;
-        gameLogic.gameOver();
+        gameLogic.evaluate();
         e.preventDefault();
     };
     const restartFunction = () => {
@@ -103,7 +116,7 @@ const gameBoard = (() => {
             x.takeTurn();
             o.takeTurn();
             x.takeTurn();
-        } else if (left.length === 6 || left.length === 2) {
+        } else if (left.length === 6 || left.length === 2 || left.length === 0) {
             x.takeTurn();
             o.takeTurn();
         }
@@ -115,7 +128,7 @@ const gameBoard = (() => {
     };
     const restart = () => _restartButton.addEventListener('click', restartFunction);
     const click = () => _cells.forEach((cell) => cell.addEventListener('click', _draw));
-    return { init, click, restart };
+    return { click, restart };
 })();
 
 gameBoard.click();
