@@ -165,6 +165,22 @@ const AI = (() => {
         document.getElementById(_checkSpace).innerText = side;
         document.getElementById(_checkSpace).style.color = side === 'O' ? 'rgb(221, 17, 17)' : 'black';
     };
+    const hard = (side) => {
+        const _availableSpace = gameLogic.space.filter((s) => s === undefined)
+        // const map = [
+        //     [space[0], space[1], space[2]],
+        //     [space[3], space[4], space[5]],
+        //     [space[6], space[7], space[8]],
+        //     [space[0], space[3], space[6]],
+        //     [space[1], space[4], space[7]],
+        //     [space[2], space[5], space[8]],
+        //     [space[0], space[4], space[8]],
+        //     [space[2], space[4], space[6]],
+        // ];
+        // for (let i = 0; i < map.length; i++) {
+        //     if (map[i].every(side)) return
+        // }
+    };
     return { easy };
 })();
 
@@ -201,6 +217,7 @@ const gameBoard = (() => {
     const _switchPlayer = function () {
         let _difficulty = document.getElementById('difficulties').value;
         if (gameLogic.status.innerText != 'Start game or select player') return;
+        if (_difficulty === 'PWF') return;
         restartFunction();
         if (this.id === 'O') {
             if (_difficulty === 'easy') AI.easy('X');
