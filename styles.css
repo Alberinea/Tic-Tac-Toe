@@ -38,6 +38,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     user-select: none;
+    transition: all 0.3s;
 }
 
 #restart {
@@ -93,4 +94,8 @@ td {
 
 .click {
     cursor: pointer;
+}
+
+.active {
+    border: solid 6px
 }

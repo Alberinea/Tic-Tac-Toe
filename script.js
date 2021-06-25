@@ -37,7 +37,7 @@ const gameLogic = (() => {
             document.getElementById('1').style.color = 'green';
             document.getElementById('2').style.color = 'green';
         }
-        if (pattern[1].every(c2)) {
+        else if (pattern[1].every(c2)) {
             status.innerText = `The winner is ${space[3]}`;
             let result = parseInt(document.getElementById(`${space[3]}`).querySelector('.count').innerText);
             document.getElementById(`${space[3]}`).querySelector('.count').innerText = result += 1;
@@ -45,7 +45,7 @@ const gameLogic = (() => {
             document.getElementById('4').style.color = 'green';
             document.getElementById('5').style.color = 'green';
         }
-        if (pattern[2].every(c3)) {
+        else if (pattern[2].every(c3)) {
             status.innerText = `The winner is ${space[6]}`;
             let result = parseInt(document.getElementById(`${space[6]}`).querySelector('.count').innerText);
             document.getElementById(`${space[6]}`).querySelector('.count').innerText = result += 1;
@@ -71,7 +71,7 @@ const gameLogic = (() => {
             document.getElementById('3').style.color = 'green';
             document.getElementById('6').style.color = 'green';
         }
-        if (pattern[1].every(c2)) {
+        else if (pattern[1].every(c2)) {
             status.innerText = `The winner is ${space[1]}`;
             let result = parseInt(document.getElementById(`${space[1]}`).querySelector('.count').innerText);
             document.getElementById(`${space[1]}`).querySelector('.count').innerText = result += 1;
@@ -79,7 +79,7 @@ const gameLogic = (() => {
             document.getElementById('4').style.color = 'green';
             document.getElementById('7').style.color = 'green';
         }
-        if (pattern[2].every(c3)) {
+        else if (pattern[2].every(c3)) {
             status.innerText = `The winner is ${space[2]}`;
             let result = parseInt(document.getElementById(`${space[2]}`).querySelector('.count').innerText);
             document.getElementById(`${space[2]}`).querySelector('.count').innerText = result += 1;
@@ -103,7 +103,7 @@ const gameLogic = (() => {
             document.getElementById('4').style.color = 'green';
             document.getElementById('8').style.color = 'green';
         }
-        if (pattern[1].every(c2)) {
+        else if (pattern[1].every(c2)) {
             status.innerText = `The winner is ${space[2]}`;
             let result = parseInt(document.getElementById(`${space[2]}`).querySelector('.count').innerText);
             document.getElementById(`${space[2]}`).querySelector('.count').innerText = result += 1;
@@ -113,10 +113,11 @@ const gameLogic = (() => {
         }
     };
     const _gameOver = () => {
-        if (gameLogic.status.innerText.includes('The winner is')) {
+        if (gameLogic.status.innerText.includes('The winner is') || gameLogic.status.innerText.includes('Draw')) {
+            document.querySelectorAll('.player').forEach((player) => player.classList.remove('active'));
             setTimeout(() => {
                 document.querySelector('body').classList.add('blur', 'click');
-            }, 1000);
+            }, 1500);
         }
     };
     const evaluate = () => {
@@ -129,9 +130,27 @@ const gameLogic = (() => {
     return { status, space, evaluate };
 })();
 
+const AI = (() => {
+    const easy = () => {
+        if (gameLogic.status.innerText.includes('The winner is') || gameLogic.status.innerText.includes('Draw')) return;
+        let _checkSpace = Math.floor(Math.random() * gameLogic.space.length);
+        while (gameLogic.space[_checkSpace] != undefined)
+            _checkSpace = Math.floor(Math.random() * gameLogic.space.length);
+        while (document.getElementById(_checkSpace).innerText === 'X')
+            _checkSpace = Math.floor(Math.random() * gameLogic.space.length);
+        gameLogic.space[_checkSpace] = 'O';
+        document.getElementById(_checkSpace).innerText = 'O';
+        document.getElementById(_checkSpace).style.color = 'rgb(221, 17, 17)';
+        console.log(_checkSpace);
+        console.log(gameLogic.space);
+    };
+    return { easy };
+})();
+
 const gameBoard = (() => {
-    const _cells = document.querySelectorAll('td');
+    const cells = document.querySelectorAll('td');
     const _restartButton = document.getElementById('restart');
+    const _switchButtons = document.querySelectorAll('.player');
     const _retry = () => {
         const left = gameLogic.space.filter((s) => s == undefined);
         if (left.length === 8 || left.length === 4) x.takeTurn();
@@ -143,35 +162,63 @@ const gameBoard = (() => {
             x.takeTurn();
             o.takeTurn();
         }
-        _cells.forEach((cell) => (cell.innerText = ''));
+        cells.forEach((cell) => (cell.innerText = ''));
         for (let i = 0; i < gameLogic.space.length; i++) {
             gameLogic.space[i] = undefined;
         }
+        cells.forEach((cell) => (cell.style.color = ''));
+        document.querySelectorAll('.player').forEach((player) => player.classList.remove('active'));
         gameLogic.status.innerText = 'Start game or select player';
     };
+    const _switchPlayer = function () {
+        if (gameLogic.status.innerText != 'Start game or select player') return;
+        _retry();
+    };
     const _draw = function (e) {
+        const difficulty = document.getElementById('difficulties').value;
         if (document.querySelector('body').classList.contains('blur')) {
             _retry();
             document.querySelector('body').classList.remove('blur', 'click');
+            e.preventDefault();
         } else {
-            if (gameLogic.status.innerText.includes('The winner is')) return;
+            if (gameLogic.status.innerText.includes('The winner is') || gameLogic.status.innerText.includes('Draw'))
+                return;
             if (this.innerText != '') return;
-            this.innerText = x.takeTurn() || o.takeTurn() || 'O';
-            this.style.color = this.innerText === 'O' ? 'rgb(221, 17, 17)' : 'black';
-            gameLogic.status.innerText = this.innerText === 'O' ? 'X turn' : 'O turn';
-            gameLogic.space[this.id] = this.innerText;
+            if (difficulty === 'easy') {
+                this.innerText = x.side; 
+                gameLogic.space[this.id] = this.innerText;
+                gameLogic.evaluate();
+                AI.easy();
+            }
+            if (difficulty === 'Play with friends') {
+                this.innerText = x.takeTurn() || o.takeTurn() || 'O';
+                this.style.color = this.innerText === 'O' ? 'rgb(221, 17, 17)' : 'black';
+                gameLogic.status.innerText = this.innerText === 'O' ? 'X turn' : 'O turn';
+                gameLogic.space[this.id] = this.innerText;
+            }
+            if (this.innerText === 'O') {
+                document.getElementById('X').classList.add('active');
+                document.getElementById('O').classList.remove('active');
+            } else {
+                document.getElementById('O').classList.add('active');
+                document.getElementById('X').classList.remove('active');
+            }
             gameLogic.evaluate();
             e.preventDefault();
         }
     };
-    const restartFunction = () => {
+    const _restartFunction = () => {
+        if (gameLogic.status.innerText.includes('The winner is') || gameLogic.status.innerText.includes('Draw')) return;
         _retry();
         document.querySelectorAll('.count').forEach((count) => (count.innerText = 0));
     };
-    const restart = () => _restartButton.addEventListener('click', restartFunction);
-    const click = () => _cells.forEach((cell) => cell.addEventListener('click', _draw));
-    return { click, restart };
+    const restart = () => _restartButton.addEventListener('click', _restartFunction);
+    const click = () => cells.forEach((cell) => cell.addEventListener('click', _draw));
+    const changePlayer = () =>
+        _switchButtons.forEach((switchButton) => switchButton.addEventListener('click', _switchPlayer));
+    return { click, restart, changePlayer };
 })();
 
 gameBoard.click();
 gameBoard.restart();
+gameBoard.changePlayer();
