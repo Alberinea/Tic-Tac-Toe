@@ -96,6 +96,10 @@ td {
     cursor: pointer;
 }
 
+.hover:hover {
+    border: solid 6px
+}
+
 .active {
     border: solid 6px
 }

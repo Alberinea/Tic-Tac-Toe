@@ -6,18 +6,18 @@
         <meta charset="UTF-8" />
     </head>
     <body>
-        <select name="difficulties" id="difficulties">
+        <select onchange="gameBoard.restartFunction()" name="difficulties" id="difficulties">
             <option id="easy" value="easy" selected="selected">Easy</option>
             <option id="normal" value="normal">Normal</option>
             <option id="impossible" value="impossible">Impossible</option>
             <option id="PWF" value="PWF">Play with friends</option>
         </select>
         <div id="scoreContainer">
-            <div id="X" class="player">
+            <div id="X" class="player hover active">
                 <span class="score">X</span>
                 <span id="Xscore" class="score count">0</span>
             </div>
-            <div id="O" class="player">
+            <div id="O" class="player hover">
                 <span class="score">O</span>
                 <span id="Oscore" class="score count">0</span>
             </div>
